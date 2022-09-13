@@ -7,6 +7,7 @@ import (
 	"encoding/base64"
 	"encoding/pem"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path"
 	"time"
@@ -98,6 +99,29 @@ func (s *signData)isEffectiveKey()bool{
 		}
 	}
 	return false
+}
+
+func (s *signData)GetPrivateKey() (string, error) {
+	if !s.SaveMode{
+		return s.privateKey, nil
+	}
+	dataBuf, err := ioutil.ReadFile(path.Join(s.PrivateKeyPath, "privateKey.pem"))
+	if err!=nil{
+		return "", err
+	}
+	return string(dataBuf), nil
+}
+
+func (s *signData)GetPublicKey()(string, error){
+	if !s.SaveMode{
+		return s.publicKey, nil
+	}
+	dataBuf, err := ioutil.ReadFile(path.Join(s.PublicKeyPath, "public.pem"))
+	if err!=nil{
+		return "", err
+	}
+	return string(dataBuf), nil
+
 }
 
 // 使用私钥进行解密

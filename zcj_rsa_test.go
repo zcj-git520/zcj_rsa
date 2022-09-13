@@ -46,3 +46,17 @@ func TestRsa(t *testing.T) {
 	fmt.Printf("密文：%v \n", cipherText)
 	fmt.Printf("原码：%v \n", planinText)
 }
+
+// test jwt
+func TestJet(t *testing.T)  {
+	jwtStr, err := CreateToken("zcj", "ss")
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	tk, err := ParseToken(jwtStr)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	fmt.Errorf(tk.Issuer)
+
+}
